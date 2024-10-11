@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product and Variants List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Our Products</h1>
+        <p>Explore our wide range of products and their variants</p>
+    </header>
+
+    <main>
+        <div id="product-list" class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <!-- Check if the product has an image, otherwise use default image -->
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'default-image.png' %}{% endif %}" alt="{{ product.name }}" class="product-image">
+                <h2 class="product-name">{{ product.name }}</h2>
+
+                <div class="variants-list">
+                    <h3>Variants:</h3>
+                    <ul>
+                        {% for variant in product.variants.all %}
+                        <li>
+                            <strong>{{ variant.name }}</strong>
+                            <p>SKU: {{ variant.sku }}</p>
+                            <p>Price: ksh{{ variant.price }}</p>
+                            <p>Details: {{ variant.details }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% empty %}
+            <p>No products available at the moment.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 IntraIntel Store | All Rights Reserved</p>
+    </footer>
+</body>
+</html>
